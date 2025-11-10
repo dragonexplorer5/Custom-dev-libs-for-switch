@@ -1,0 +1,180 @@
+📘 SwitchLib Design Document
+A Simple Nintendo Switch Homebrew Library for Readability
+
+1. Purpose
+SwitchLib is a wrapper library built on top of libnx (the official Nintendo Switch homebrew SDK). Its goal is to make programming for the Switch easy to read, easy to write, and easy to understand — even for beginners or hobbyists with little coding knowledge.
+
+2. Audience
+Developers: Want cleaner, shorter code.
+
+Beginners: Want to understand what’s happening without learning every detail of C or libnx.
+
+Non‑coders: Can read the commands like plain English instructions.
+
+3. Scope
+SwitchLib simplifies:
+
+System setup and cleanup
+
+Input handling (buttons, joysticks)
+
+Graphics and text rendering (with font size and positioning)
+
+Filesystem (open, read, write files)
+
+Error handling
+
+Time and loop control
+
+Networking (future expansion)
+
+4. Design Principles
+Readability First: Commands should look like plain English.
+
+Minimal Boilerplate: Hide repetitive setup and cleanup.
+
+Consistency: Every function starts with Switch_.
+
+Safety: Always clean up resources automatically.
+
+Extendability: Easy to add new modules later.
+
+5. Architecture Overview
+Core Module: Handles initialization and exit.
+
+Input Module: Simplifies button and joystick checks.
+
+Graphics Module: Handles text, positioning, font size, and screen clearing.
+
+Filesystem Module: Simplifies file operations.
+
+Error Module: Provides clear error codes.
+
+Time Module: Sleep and current time.
+
+Networking Module: Optional future expansion.
+
+6. Command Dictionary (Plain Language)
+🔧 System Setup
+Switch_Init() → Start everything up.
+
+Switch_Exit() → Shut everything down.
+
+🔄 Program Loop
+Switch_Running() → Keep going until the user quits.
+
+🎮 Input
+Switch_Pressed(A) → Did the player just press A?
+
+Switch_Held(LEFT) → Is the player holding LEFT?
+
+Switch_Released(B) → Did the player let go of B?
+
+Switch_Joystick(LEFT_X) → Where is the joystick pointing?
+
+🖥️ Graphics & Text
+Switch_Print("Hello") → Show text on the screen.
+
+Switch_Clear() → Erase everything on the screen.
+
+Switch_DrawText("Score: 100", x, y, size) → Write text at position (x,y) with chosen font size.
+
+Switch_SetFontSize(20) → Change the default text size.
+
+📂 Files
+Switch_Open("file.txt", READ) → Open a file to read.
+
+Switch_Open("file.txt", WRITE) → Open a file to write.
+
+Switch_Read(file, buffer, size) → Read data from a file.
+
+Switch_Write(file, buffer, size) → Write data into a file.
+
+Switch_Close(file) → Close the file when done.
+
+⚠️ Errors
+Switch_Error() → Check if something went wrong.
+
+Error Codes:
+
+SWITCH_OK → Everything is fine.
+
+SWITCH_ERR_INIT → Setup failed.
+
+SWITCH_ERR_FILE → File problem.
+
+SWITCH_ERR_INPUT → Controller problem.
+
+⏱️ Time
+Switch_Sleep(ms) → Pause for a number of milliseconds.
+
+Switch_TimeNow() → Get the current time.
+
+🌐 Networking (Future)
+Switch_NetInit() → Start internet functions.
+
+Switch_Resolve("example.com") → Find the address of a website.
+
+Switch_Send(sock, data, size) → Send data over the network.
+
+Switch_Recv(sock, buffer, size) → Receive data from the network.
+
+7. How to Build This Library (Step‑by‑Step)
+Step 1: Set Up Environment
+Install devkitPro (toolchain for Switch homebrew).
+
+Install libnx (official SDK).
+
+Step 2: Create Project Structure
+Make a folder switchlib/.
+
+Inside, create files:
+
+switchlib.h (header with all function names).
+
+switch_core.c (system setup).
+
+switch_input.c (input handling).
+
+switch_graphics.c (text rendering).
+
+switch_fs.c (filesystem).
+
+switch_error.c (error handling).
+
+switch_time.c (time functions).
+
+Step 3: Write Wrappers
+Each file contains simple functions that call libnx internally.
+
+Example: Switch_Pressed(A) calls hidKeysDown() but hides the bitmask logic.
+
+Step 4: Test
+Write a demo program:
+
+Show “Hello, Switch!” on screen.
+
+Wait for button A.
+
+Print “A pressed!” when detected.
+
+Step 5: Document
+Write a README explaining each command in plain language.
+
+Include examples for beginners.
+
+8. Teaching Non‑Coders
+Think of commands as instructions. Example: Switch_Print("Hello") = “Show Hello on screen.”
+
+Ignore the technical details. You don’t need to know about memory or pointers.
+
+Every command starts with Switch_. That makes it easy to spot.
+
+9. Closing Notes
+SwitchLib is designed so that anyone can build and use it in their free time.
+
+Developers get cleaner code.
+
+Beginners can understand commands without deep C knowledge.
+
+Non‑coders can read the library like plain English instructions.

@@ -1,0 +1,104 @@
+Unified UI System Scope (Extended)
+==================================
+
+1. Purpose
+----------
+- Provide a reusable UI framework for Nintendo Switch homebrew.
+- Support interactive elements:
+  - Buttons: selectable, trigger functions when pressed.
+  - Bars: percentage-based fill elements with min/max boundaries.
+- Add background color control (RGB).
+- Add button toggling (hide/show).
+
+2. Core Concepts
+----------------
+- Each UI element has:
+  - Name (string identifier).
+  - Position and size (X/Y coordinates).
+  - Base color (RGB).
+  - State (NONE, DOWN, HELD, UP).
+  - Function binding (calls a function with the same name).
+  - Visibility flag (SHOW/HIDE).
+- Input states:
+  - DOWN: pressed once.
+  - HELD: pressed and held for > 1/3 second.
+  - UP: released.
+
+3. Background Color
+-------------------
+- The screen has a global background color defined by RGB values.
+- Background can be updated dynamically:
+  - Example: Background(100, 150, 200) → sets background to light blue.
+- When updated:
+  - Clear screen.
+  - Fill entire screen with background color.
+  - Redraw visible UI elements on top.
+
+4. Buttons
+----------
+- Definition:
+  - Rectangular area with label text.
+  - Highlighted when selected (RGB increment +5 per channel).
+  - Visibility flag determines if button is active.
+- Behavior:
+  - SHOW: button is drawn and responds to input.
+  - HIDE: button is ignored (treated as if it does not exist).
+- States:
+  - DOWN: immediate trigger → call ButtonName().
+  - HELD: trigger after 1/3 second → call ButtonName() repeatedly or once.
+  - UP: optional logging → "ButtonName released".
+- Function Binding:
+  - Example: Button "Start" → calls Start().
+  - Example: Button "Quit" → calls Quit().
+
+5. Bars
+-------
+- Definition:
+  - Spans from Min X/Y to Max X/Y.
+  - Represents percentage fill of defined area.
+  - Visibility flag determines if bar is active.
+- Behavior:
+  - SHOW: bar is drawn and responds to input.
+  - HIDE: bar is ignored (treated as if it does not exist).
+- On update:
+  - Clear screen.
+  - Apply background color.
+  - Draw visible bars with percentage fill.
+- Function Binding:
+  - Example: Bar "HealthBar" → calls HealthBar().
+  - Example: Bar "ManaBar" → calls ManaBar().
+
+6. Highlighting
+---------------
+- Selected elements (Button or Bar) increment RGB values:
+  - +5 per channel (red, green, blue).
+  - Multiple increments allowed (e.g., +10 red, +15 blue).
+- Non-selected elements remain at base color.
+
+7. Timing
+---------
+- DOWN: immediate trigger.
+- HELD: trigger after 1/3 second continuous press.
+- UP: trigger on release.
+
+8. Extensibility
+----------------
+- Support multiple buttons and bars on screen.
+- Allow menus (arrays of buttons).
+- Allow progress bars/sliders (bars with dynamic percentage).
+- Background color can be changed dynamically during runtime.
+- Future: dynamic loading of actions from external files.
+
+9. Example Flow
+---------------
+- User sets background color:
+  - Background(50, 50, 50) → dark gray background applied.
+- User presses A on "Start" button:
+  - State = DOWN → call Start().
+  - Button highlighted with RGB increment.
+- User hides "Quit" button:
+  - Quit button is ignored (no drawing, no input).
+- User presses A on "HealthBar":
+  - State = DOWN → call HealthBar().
+  - Screen clears, background applied, bar drawn from Min X/Y to Max X/Y.
+  - Fill percentage applied (e.g., 75% → 3/4 filled).

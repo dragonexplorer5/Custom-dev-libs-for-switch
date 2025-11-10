@@ -1,0 +1,58 @@
+switch_open_menu              # Open Tesla overlay
+switch_restart_overlay        # Restart overlay if glitchy
+switch_toggle_overlay         # Hide/show overlay
+switch_list_overlay_files     # List installed overlay files
+switch_open_overlay_file <path>  # Open a specific overlay file
+switch_toggle_overlay_theme   # Switch overlay theme (light/dark)
+
+switch_show_battery           # Show battery % and charging status
+switch_show_storage           # Show SD card space
+switch_show_ram               # Show memory usage
+switch_show_temp              # Show CPU/GPU temperature
+switch_uptime                 # Show time since boot
+switch_show_version           # Show firmware + overlay version
+switch_show_controller_status # Show controller battery + connection
+switch_vibrate_test           # Test controller rumble
+
+switch_net_status             # Show Wi‑Fi + IP
+switch_show_ip                # Show IP address
+switch_show_network_speed     # Show download/upload speed
+switch_toggle_wifi            # Enable/disable Wi‑Fi
+switch_toggle_airplane        # Enable/disable airplane mode
+switch_check_updates          # Check for updates
+
+switch_take_screenshot        # Capture screenshot instantly
+switch_record_clip            # Record last 30s gameplay
+switch_toggle_fps             # Toggle FPS counter
+
+switch_toggle_logs            # Enable/disable debug logs
+switch_show_error_log         # Show error logs
+switch_clear_error_log        # Clear error logs
+switch_clear_cache            # Clear temp files
+switch_toggle_safe_mode       # Run overlay in safe mode
+
+switch_show_time              # Show system time
+switch_toggle_notifications   # Toggle notifications
+switch_toggle_mute            # Mute/unmute audio
+switch_brightness_up          # Increase brightness
+switch_brightness_down        # Decrease brightness
+switch_quick_sleep            # Put Switch to sleep
+
+switch_mod_read_memory <address> <length>   # Read memory at address
+switch_mod_write_memory <address> <value>   # Write value to memory
+switch_mod_infinite_health    # Keeps health at max
+switch_mod_infinite_ammo      # Unlimited ammo
+switch_mod_infinite_money     # Max currency/money
+switch_mod_fast_run           # Run faster
+switch_mod_super_jump         # Jump higher
+switch_mod_no_clip            # Walk through walls/objects
+switch_mod_one_hit_kill       # Enemies die in one hit
+switch_mod_infinite_items     # Inventory items never decrease
+
+switch_backup_config          # Save overlay settings to SD card
+switch_restore_config         # Restore saved settings
+switch_export_logs            # Export logs for troubleshooting
+switch_theme_store            # Browse/download overlay themes
+switch_toggle_parental        # Enable/disable parental controls
+switch_show_game_info         # Show current game title + ID
+switch_toggle_overlay_shortcuts # Enable quick overlay shortcuts

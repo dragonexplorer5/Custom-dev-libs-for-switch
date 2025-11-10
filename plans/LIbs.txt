@@ -1,0 +1,167 @@
+Here’s a proposed set of custom libraries you can build:
+
+Library Name	Purpose
+libsaveio	Low-level file I/O for reading/writing save files
+libpokeparser	Game-specific save parsing and data extraction
+libpokeedit	High-level editing functions for Pokémon data
+libgameid	Game detection and content checking
+libexporter	Save export and backup management
+libui	UI rendering and input handling (touch, buttons)
+libutils	Common utilities: logging, string manipulation, CRC, etc.
+🔧 1. libsaveio – Save File I/O
+Responsibilities:
+
+Open, read, and write save files from SD card
+
+Handle file paths and directory creation
+
+Provide buffered access to save data
+
+Key Functions:
+
+cpp
+bool load_save(const std::string& path, std::vector<uint8_t>& buffer);
+bool write_save(const std::string& path, const std::vector<uint8_t>& buffer);
+bool create_directory(const std::string& path);
+🧬 2. libpokeparser – Save Structure Parsing
+Responsibilities:
+
+Parse raw save data into structured objects
+
+Support multiple games via modular parsers
+
+Handle offsets, data types, and endian conversion
+
+Key Concepts:
+
+Use structs for Pokémon, Trainer, Box, etc.
+
+Define per-game offset maps in JSON or C++ headers
+
+Example:
+
+cpp
+struct Pokemon {
+    uint16_t species;
+    uint8_t level;
+    uint32_t pid;
+    uint32_t tid;
+    // ...
+};
+
+bool parse_pokemon(const std::vector<uint8_t>& buffer, size_t offset, Pokemon& out);
+🧪 3. libpokeedit – Editing Logic
+Responsibilities:
+
+Modify Pokémon data in memory
+
+Validate edits (e.g., legal moves, level caps)
+
+Provide helper functions for common tasks
+
+Key Functions:
+
+cpp
+bool set_species(Pokemon& mon, uint16_t species_id);
+bool set_level(Pokemon& mon, uint8_t level);
+bool add_item(std::vector<uint8_t>& save, uint16_t item_id, uint8_t quantity);
+🧠 4. libgameid – Game Detection
+Responsibilities:
+
+Identify game from save file
+
+Load appropriate parser and editor modules
+
+Maintain a database of known game signatures
+
+Key Functions:
+
+cpp
+enum class GameID { UNKNOWN, SWORD, SHIELD, BDSP, ARCEUS };
+
+GameID detect_game(const std::vector<uint8_t>& buffer);
+std::string game_name(GameID id);
+📤 5. libexporter – Save Export & Backup
+Responsibilities:
+
+Export modified saves to Dumps/saves/(Game)/(User)
+
+Create backups of original saves
+
+Handle timestamped versioning
+
+Key Functions:
+
+cpp
+bool export_save(const std::vector<uint8_t>& buffer, const std::string& game, const std::string& user);
+bool backup_save(const std::vector<uint8_t>& buffer, const std::string& game, const std::string& user);
+🖼️ 6. libui – User Interface
+Responsibilities:
+
+Render menus, text, and input fields
+
+Handle touchscreen and controller input
+
+Display Pokémon data in a user-friendly format
+
+Key Features:
+
+Menu navigation system
+
+Input widgets (text boxes, sliders, dropdowns)
+
+Pokémon viewer/editor screen
+
+Example:
+
+cpp
+void draw_main_menu();
+void draw_pokemon_editor(const Pokemon& mon);
+bool handle_input();
+🧰 7. libutils – Utility Functions
+Responsibilities:
+
+Logging and debugging
+
+String formatting and conversion
+
+Checksum calculation
+
+Byte manipulation
+
+Key Functions:
+
+cpp
+void log(const std::string& message);
+uint32_t calculate_crc32(const std::vector<uint8_t>& data);
+std::string to_hex(uint32_t value);
+🧩 Putting It All Together
+Your main .nro app will link against these libraries and orchestrate them like this:
+
+cpp
+int main() {
+    std::vector<uint8_t> save_data;
+    std::string save_path = "sdmc:/JKSV/PokemonSword/User1/main";
+
+    if (!load_save(save_path, save_data)) {
+        log("Failed to load save.");
+        return -1;
+    }
+
+    GameID game = detect_game(save_data);
+    if (game == GameID::UNKNOWN) {
+        log("Unsupported game.");
+        return -1;
+    }
+
+    Pokemon mon;
+    parse_pokemon(save_data, 0x2000, mon); // Example offset
+    set_level(mon, 100);
+    set_species(mon, 25); // Pikachu
+
+    write_pokemon(save_data, 0x2000, mon);
+    backup_save(save_data, game_name(game), "User1");
+    export_save(save_data, game_name(game), "User1");
+
+    return 0;
+}
