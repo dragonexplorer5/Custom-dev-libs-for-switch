@@ -60,3 +60,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ⭐ Support
 If you find this project useful, consider starring ⭐ the repository to show support and help others discover it.
+
+if you want any new libs please leave a issue go in very deep detail pls
